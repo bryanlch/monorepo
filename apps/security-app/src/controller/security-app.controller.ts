@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { SecurityAppService } from './security-app.service';
+import { SecurityAppService } from '../service/security-app.service';
 import { EventPattern } from '@nestjs/microservices';
 
 @Controller()

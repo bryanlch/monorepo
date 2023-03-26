@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model conditons_status {
+  id               Int           @id @default(autoincrement())
+  id_credit_status Int           @unique(map: "id_credit_status")
+  expiration_fees  Int?
+  expiration_time  Int?
+  credit_status    credit_status @relation(fields: [id_credit_status], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "conditons_status_ibfk_1")
+}
+
+model credit {
+  id              Int       @id @default(autoincrement())
+  id_client       Int
+  date_start      DateTime  @db.Timestamp(0)
+  date_expiration DateTime  @db.Timestamp(0)
+  id_user         Int
+  id_tye_credit   Int
+  credit          Float?
+  id_currency     Int
+  created_at      DateTime? @db.Timestamp(0)
+  update_at       DateTime? @db.Timestamp(0)
+  customer        customer  @relation(fields: [id_client], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "credit_ibfk_1")
+
+  @@index([id_client], map: "id_client")
+}
+
+model credit_status {
+  id               Int               @id @default(autoincrement())
+  color            String?           @db.VarChar(255)
+  tag              String?           @db.VarChar(255)
+  conditons_status conditons_status?
+}
+
+model currency {
+  id          Int      @id @default(autoincrement())
+  symbol      String?  @db.VarChar(255)
+  rate_change Float?
+  principal   Boolean?
+}
+
+model customer {
+  id             Int       @id @default(autoincrement())
+  name           String?   @db.VarChar(255)
+  last_name      String?   @db.VarChar(255)
+  address        String?   @db.VarChar(255)
+  identification String?   @db.VarChar(255)
+  id_status      Int
+  created_at     DateTime? @db.Timestamp(0)
+  update_at      DateTime? @db.Timestamp(0)
+  credit         credit[]
+}
+
+model guarantee {
+  id             Int     @id @default(autoincrement())
+  id_credit      Int
+  product        String? @db.VarChar(255)
+  product_detail String? @db.VarChar(255)
+  valued         Float?
+}
+
+model payment_history {
+  id         Int       @id @default(autoincrement())
+  id_credit  Int?
+  quotas     Float?
+  date       DateTime? @db.Timestamp(0)
+  created_at DateTime? @db.Timestamp(0)
+}
+
+model type_credit {
+  id             Int    @id @default(autoincrement())
+  percentage     Float?
+  fees           Float
+  period         Int
+  defaulted_loan Float?
+}
+
+model users {
+  id         Int       @id @default(autoincrement())
+  full_name  String?   @db.VarChar(255)
+  password   String?   @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+}
