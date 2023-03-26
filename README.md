@@ -37,6 +37,8 @@ $ pnpm install
 ```bash
 # watch sub app
 nest start name-app --watch
+nest start security-app --watch
+ nest start monorepo_nestjs --watch
 
 # development
 $ pnpm run start
