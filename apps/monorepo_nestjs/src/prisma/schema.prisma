@@ -27,6 +27,7 @@ model credit {
   created_at      DateTime? @db.Timestamp(0)
   update_at       DateTime? @db.Timestamp(0)
   customer        customer  @relation(fields: [id_client], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "credit_ibfk_1")
+  user            users     @relation("credit_user", fields: [id_user], references: [id])
 
   @@index([id_client], map: "id_client")
 }
@@ -86,4 +87,5 @@ model users {
   full_name  String?   @db.VarChar(255)
   password   String?   @db.VarChar(255)
   created_at DateTime? @db.Timestamp(0)
+  credit    credit[]  @relation("credit_user")
 }
